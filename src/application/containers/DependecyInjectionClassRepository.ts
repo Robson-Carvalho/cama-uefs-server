@@ -1,8 +1,8 @@
-import { Create } from "../../core/use-cases/classes/Create";
-import { Delete } from "../../core/use-cases/classes/Delete";
-import { Get } from "../../core/use-cases/classes/Get";
-import { GetById } from "../../core/use-cases/classes/GetById";
-import { Update } from "../../core/use-cases/classes/Update";
+import { Create } from "../../core/use-cases/class/Create";
+import { Delete } from "../../core/use-cases/class/Delete";
+import { Get } from "../../core/use-cases/class/Get";
+import { GetById } from "../../core/use-cases/class/GetById";
+import { Update } from "../../core/use-cases/class/Update";
 import { ClassRepository } from "../../infrastructure/repositories/ClassRepository";
 
 class DependecyInjectionClassRepository {

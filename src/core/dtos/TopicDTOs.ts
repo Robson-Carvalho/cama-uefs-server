@@ -1,11 +1,13 @@
 import { Schema } from "mongoose";
 
-interface IClass {
+interface ITopic {
   _id: Schema.Types.ObjectId;
+  classID: Schema.Types.ObjectId;
   title: string;
   path: string;
+  content: string;
   createdAt: NativeDate;
   updatedAt: NativeDate;
 }
 
-export { IClass };
+export { ITopic };
