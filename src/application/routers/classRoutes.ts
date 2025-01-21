@@ -13,6 +13,13 @@ router.get("/", (req: Request, res: Response, next: NextFunction) => {
   classController.get(req, res, next);
 });
 
+router.get(
+  "/content/map",
+  (req: Request, res: Response, next: NextFunction) => {
+    classController.getContentMap(req, res, next);
+  }
+);
+
 router.get("/:id", (req: Request, res: Response, next: NextFunction) => {
   classController.getById(req, res, next);
 });

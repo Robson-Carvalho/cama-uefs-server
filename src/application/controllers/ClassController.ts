@@ -6,6 +6,8 @@ class ClassController {
   private _get = DependecyInjectionClassRepository.getGetUseCase();
   private _create = DependecyInjectionClassRepository.getCreateUseCase();
   private _getById = DependecyInjectionClassRepository.getGetByIdUseCase();
+  private _getContentMap =
+    DependecyInjectionClassRepository.getGetContentMapUseCase();
   private _update = DependecyInjectionClassRepository.getUpdateUseCase();
   private _delete = DependecyInjectionClassRepository.getDeleteUseCase();
 
@@ -21,6 +23,16 @@ class ClassController {
 
       console.error("Error: " + e.message);
       return next(new InternalServerError("Internal server error"));
+    }
+  }
+
+  async getContentMap(req: Request, res: Response, next: NextFunction) {
+    try {
+      const contentMap = await this._getContentMap.execute();
+
+      return res.status(200).json(contentMap);
+    } catch (e: any) {
+      return next(new InternalServerError(e.message));
     }
   }
 
