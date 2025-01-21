@@ -1,3 +1,4 @@
+import { ClassModel } from "../../core/domain/entities/Class";
 import { TopicModel } from "../../core/domain/entities/Topic";
 import { ITopicRepository } from "../../core/domain/repositories/ITopicRepository";
 import { ITopic } from "../../core/dtos/TopicDTOs";
@@ -9,6 +10,26 @@ class TopicRepository implements ITopicRepository {
     } catch (error) {
       console.error("Error fetching topics:", error);
       return [];
+    }
+  }
+
+  async getTopicByClassAndPath(
+    classPath: string,
+    topicPath: string
+  ): Promise<ITopic | null> {
+    try {
+      const classData = await ClassModel.findOne({ path: classPath });
+      if (!classData) return null;
+
+      const topicData = await TopicModel.findOne({
+        classID: classData._id,
+        path: topicPath,
+      });
+
+      return topicData || null;
+    } catch (error) {
+      console.error("Error fetching topic by class and path:", error);
+      throw new Error("Database query error");
     }
   }
 

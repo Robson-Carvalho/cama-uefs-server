@@ -4,6 +4,10 @@ interface ITopicRepository {
   get(): Promise<ITopic[] | []>;
   getById(id: string): Promise<ITopic | null>;
   getByPath(path: string): Promise<ITopic | null>;
+  getTopicByClassAndPath(
+    classPath: string,
+    topicPath: string
+  ): Promise<ITopic | null>;
   create(
     title: string,
     content: string,

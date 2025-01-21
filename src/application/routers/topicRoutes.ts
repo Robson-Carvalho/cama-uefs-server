@@ -12,6 +12,13 @@ router.get("/:id", (req: Request, res: Response, next: NextFunction) => {
   topicController.getById(req, res, next);
 });
 
+router.get(
+  "/:classPath/:topicPath",
+  (req: Request, res: Response, next: NextFunction) => {
+    topicController.getTopicByClassAndPath(req, res, next);
+  }
+);
+
 router.get("/path/:path", (req: Request, res: Response, next: NextFunction) => {
   topicController.getByPath(req, res, next);
 });

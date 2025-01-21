@@ -9,6 +9,31 @@ class TopicController {
   private _getByPath = DependecyInjectionTopicRepository.getGetByPathUseCase();
   private _update = DependecyInjectionTopicRepository.getUpdateUseCase();
   private _delete = DependecyInjectionTopicRepository.getDeleteUseCase();
+  private _getTopicByClassAndPath =
+    DependecyInjectionTopicRepository.getTopicByClassAndPathUseCase();
+
+  async getTopicByClassAndPath(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { classPath, topicPath } = req.params;
+
+      const topic = await this._getTopicByClassAndPath.execute(
+        classPath,
+        topicPath
+      );
+      if (!topic) {
+        return res.status(404).json({ message: "Topic not found" });
+      }
+
+      return res.status(200).json(topic);
+    } catch (error) {
+      console.error("Error fetching topic by class and path:", error);
+      return next(new InternalServerError("Internal server error"));
+    }
+  }
 
   async get(req: Request, res: Response, next: NextFunction) {
     try {

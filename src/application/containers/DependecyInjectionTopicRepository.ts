@@ -5,6 +5,7 @@ import { Create } from "../../core/use-cases/topic/Create";
 import { Delete } from "../../core/use-cases/topic/Delete";
 import { Update } from "../../core/use-cases/topic/Update";
 import { GetByPath } from "../../core/use-cases/topic/GetByPath";
+import { GetTopicByClassAndPath } from "../../core/use-cases/topic/GetTopicByClassAndPath";
 
 class DependecyInjectionTopicRepository {
   private static _topicRepository = new TopicRepository();
@@ -19,6 +20,10 @@ class DependecyInjectionTopicRepository {
 
   static getGetByIdUseCase() {
     return new GetById(this._topicRepository);
+  }
+
+  static getTopicByClassAndPathUseCase() {
+    return new GetTopicByClassAndPath(this._topicRepository);
   }
 
   static getGetByPathUseCase() {
