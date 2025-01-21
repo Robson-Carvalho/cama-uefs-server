@@ -7,7 +7,9 @@ interface IClassRepository {
 
   getById(_id: string): Promise<IClass | null>;
 
-  update(title: string, path: string): Promise<void>;
+  getLastCreated(): Promise<IClass | null>;
+
+  update(_id: string, title: string, path: string): Promise<void>;
 
   delete(_id: string): Promise<void>;
 }

@@ -6,6 +6,8 @@ interface IClass {
   path: string;
   next: Schema.Types.ObjectId;
   previous: Schema.Types.ObjectId;
+  createdAt: NativeDate;
+  updatedAt: NativeDate;
 }
 
 export { IClass };

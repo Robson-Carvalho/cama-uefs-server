@@ -1,5 +1,5 @@
-import { ClassRepository } from "../../infrastructure/repositories/ClassRepository";
-import { IClass } from "../dtos/ClassDTOs";
+import { ClassRepository } from "../../../infrastructure/repositories/ClassRepository";
+import { IClass } from "../../dtos/ClassDTOs";
 
 class Get {
   constructor(private _classRepository: ClassRepository) {}

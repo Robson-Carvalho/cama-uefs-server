@@ -1,17 +1,16 @@
 import { Schema, model } from "mongoose";
+import { IClass } from "../../dtos/ClassDTOs";
 
 const ClassSchema = new Schema(
   {
     title: { type: String, required: true },
     path: { type: String, required: true },
-    next: { type: Schema.Types.ObjectId, ref: "Class", default: null },
-    previous: { type: Schema.Types.ObjectId, ref: "Class", default: null },
   },
   {
     timestamps: true,
   }
 );
 
-const Class = model("Class", ClassSchema);
+const ClassModel = model<IClass>("classes", ClassSchema);
 
-module.exports = { Class };
+export { ClassModel };

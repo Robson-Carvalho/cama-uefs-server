@@ -1,22 +1,109 @@
 import { Request, Response, NextFunction } from "express";
-
 import { DependecyInjectionClassRepository } from "../containers/DependecyInjectionClassRepository";
-import { InternalServerError } from "../../core/errors/Errors";
+import { InternalServerError, ValidationError } from "../../core/errors/Errors";
 
 class ClassController {
   private _get = DependecyInjectionClassRepository.getGetUseCase();
+  private _create = DependecyInjectionClassRepository.getCreateUseCase();
+  private _getById = DependecyInjectionClassRepository.getGetByIdUseCase();
+  private _update = DependecyInjectionClassRepository.getUpdateUseCase();
+  private _delete = DependecyInjectionClassRepository.getDeleteUseCase();
 
   async get(req: Request, res: Response, next: NextFunction) {
     try {
-      const _class = await this._get.execute();
+      const classes = await this._get.execute();
 
-      return res.status(200).json(_class);
+      return res.status(200).json(classes);
     } catch (e: any) {
       if (!(e instanceof InternalServerError)) {
         return next(e);
       }
 
-      console.log("Error: " + e.message);
+      console.error("Error: " + e.message);
+      return next(new InternalServerError("Internal server error"));
+    }
+  }
+
+  async create(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { title, path } = req.body;
+
+      if (!title) {
+        throw new ValidationError("Title class required");
+      }
+
+      if (!path) {
+        throw new ValidationError("Path class required");
+      }
+
+      const newClass = await this._create.execute(title, path);
+
+      if (!newClass) {
+        throw new ValidationError("Failed to create class");
+      }
+
+      return res.status(201).json(newClass);
+    } catch (e: any) {
+      if (!(e instanceof InternalServerError)) {
+        return next(e);
+      }
+
+      console.error("Error: " + e.message);
+      return next(new InternalServerError("Internal server error"));
+    }
+  }
+
+  async getById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const classData = await this._getById.execute(id);
+
+      if (!classData) {
+        return res.status(404).json({ message: "Class not found" });
+      }
+
+      return res.status(200).json(classData);
+    } catch (e: any) {
+      if (!(e instanceof InternalServerError)) {
+        return next(e);
+      }
+
+      console.error("Error: " + e.message);
+      return next(new InternalServerError("Internal server error"));
+    }
+  }
+
+  async update(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const { title, path } = req.body;
+
+      await this._update.execute(id, title, path);
+
+      return res.status(200).json({ message: "Class updated successfully" });
+    } catch (e: any) {
+      if (!(e instanceof InternalServerError)) {
+        return next(e);
+      }
+
+      console.error("Error: " + e.message);
+      return next(new InternalServerError("Internal server error"));
+    }
+  }
+
+  async delete(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+
+      await this._delete.execute(id);
+
+      return res.status(200).json({ message: "Class deleted successfully" });
+    } catch (e: any) {
+      if (!(e instanceof InternalServerError)) {
+        return next(e);
+      }
+
+      console.error("Error: " + e.message);
       return next(new InternalServerError("Internal server error"));
     }
   }
