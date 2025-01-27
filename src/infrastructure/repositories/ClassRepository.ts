@@ -36,25 +36,25 @@ class ClassRepository implements IClassRepository {
       const contentMap = await ClassModel.aggregate([
         {
           $lookup: {
-            from: "topics", // Coleção de tópicos
-            localField: "_id", // Campo na coleção de classes
-            foreignField: "classID", // Campo de referência na coleção de tópicos
-            as: "topics", // Nome do array resultante
+            from: "topics",
+            localField: "_id",
+            foreignField: "classID",
+            as: "topics",
           },
         },
         {
           $project: {
-            classID: "$_id", // ID da classe
-            className: "$name", // Nome da classe
-            classPath: "$path", // Caminho da classe
+            classID: "$_id",
+            className: { $ifNull: ["$title", null] },
+            classPath: "$path",
             topics: {
               $map: {
-                input: "$topics", // Array de tópicos
+                input: "$topics",
                 as: "topic",
                 in: {
-                  _id: "$$topic._id", // ID do tópico
-                  name: "$$topic.title", // Nome do tópico
-                  path: "$$topic.path", // Caminho do tópico
+                  _id: "$$topic._id",
+                  name: "$$topic.title",
+                  path: "$$topic.path",
                 },
               },
             },
