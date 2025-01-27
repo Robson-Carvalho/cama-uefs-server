@@ -9,12 +9,7 @@ const app: Application = express();
 
 MongoDB.getInstance().connect();
 
-const corsOptions = {
-  origin: "*",
-};
-
-app.use(cors(corsOptions));
-
+app.use(cors());
 app.use(express.json());
 app.use("/api/v1", router);
 app.use(errorHandler);
