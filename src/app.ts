@@ -10,7 +10,7 @@ const app: Application = express();
 MongoDB.getInstance().connect();
 
 const corsOptions = {
-  origin: [process.env.FRONTEND_URL as string],
+  origin: [(process.env.FRONTEND_URL as string) || "*"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
