@@ -1,4 +1,6 @@
+import mongoose from "mongoose";
 import { ClassModel } from "../../core/domain/entities/Class";
+import { TopicModel } from "../../core/domain/entities/Topic";
 import { IClassRepository } from "../../core/domain/repositories/IClassRepository";
 import { IClass } from "../../core/dtos/ClassDTOs";
 import { IContentMap } from "../../core/interfaces/IContentMap";
@@ -97,11 +99,22 @@ class ClassRepository implements IClassRepository {
   }
 
   async delete(_id: string): Promise<void> {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
     try {
-      await ClassModel.findByIdAndDelete(_id);
+      await TopicModel.deleteMany({ classID: _id }, { session });
+
+      await ClassModel.findByIdAndDelete(_id, { session });
+
+      await session.commitTransaction();
+      console.log("Class and associated topics deleted successfully.");
     } catch (error) {
-      console.error("Error deleting class:", error);
-      throw new Error("Failed to delete class");
+      await session.abortTransaction();
+      console.error("Error deleting class and associated topics:", error);
+      throw new Error("Failed to delete class and associated topics");
+    } finally {
+      session.endSession();
     }
   }
 }
