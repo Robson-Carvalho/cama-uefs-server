@@ -4,6 +4,21 @@ interface IAdmin {
   _id: Schema.Types.ObjectId;
   name: string;
   email: string;
+  password: string;
 }
 
-export { IAdmin };
+interface IGetAdmins {
+  name: string;
+}
+
+interface IResponseCreateAdmin {
+  _id: Schema.Types.ObjectId;
+}
+
+interface IResponseAdminById {
+  _id: Schema.Types.ObjectId;
+  name: string;
+  email: string;
+}
+
+export { IAdmin, IGetAdmins, IResponseCreateAdmin, IResponseAdminById };
