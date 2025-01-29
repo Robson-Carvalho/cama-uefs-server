@@ -1,0 +1,3 @@
+class Mailer {}
+
+export { Mailer };
