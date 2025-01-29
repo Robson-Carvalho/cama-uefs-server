@@ -1,3 +1,4 @@
+import { AdminModel } from "../../core/domain/entities/Admin";
 import { IAdminRepository } from "../../core/domain/repositories/IAdminRepository";
 import {
   IGetAdmins,
@@ -6,8 +7,13 @@ import {
 } from "../../core/dtos/AdminDTOs";
 
 class AdminRepository implements IAdminRepository {
-  get(): Promise<IGetAdmins[] | []> {
-    throw new Error("Method not implemented.");
+  async get(): Promise<IGetAdmins[] | []> {
+    try {
+      return await AdminModel.find();
+    } catch (error) {
+      console.error("Error fetching classes:", error);
+      return [];
+    }
   }
   create(
     name: string,
