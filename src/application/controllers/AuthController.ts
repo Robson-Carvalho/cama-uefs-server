@@ -4,6 +4,8 @@ import { DependecyInjectionAuthRepository } from "../containers/DependecyInjecti
 
 class AuthController {
   private _signIn = DependecyInjectionAuthRepository.getSignInUseCase();
+  private _recoverPassword =
+    DependecyInjectionAuthRepository.getRecoverPasswordUseCase();
 
   async signIn(req: Request, res: Response, next: NextFunction) {
     try {
@@ -16,6 +18,24 @@ class AuthController {
       const payload = await this._signIn.execute(email, password);
 
       res.status(200).json(payload);
+    } catch (e: any) {
+      if (!(e instanceof InternalServerError)) {
+        return next(e);
+      }
+
+      next(new InternalServerError(e.message));
+    }
+  }
+
+  async recoverPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email } = req.params;
+
+      if (!email) next(new ValidationError("E-mail required."));
+
+      await this._recoverPassword.execute(email);
+
+      res.status(200).send();
     } catch (e: any) {
       if (!(e instanceof InternalServerError)) {
         return next(e);

@@ -1,4 +1,5 @@
 import { AdminRepository } from "../../../infrastructure/repositories/AdminRepository";
+import { Encryption } from "../../../infrastructure/utils/Encryption";
 
 class Update {
   constructor(private _adminRepository: AdminRepository) {}
@@ -9,7 +10,9 @@ class Update {
     email: string,
     password: string
   ): Promise<void> {
-    await this._adminRepository.update(_id, name, email, password);
+    const hashPassword = await Encryption.getInstance().hash(password);
+
+    await this._adminRepository.update(_id, name, email, hashPassword);
   }
 }
 

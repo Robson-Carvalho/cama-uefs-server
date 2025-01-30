@@ -105,7 +105,7 @@ class AdminController {
 
       await this._update.execute(id, name, email, password);
 
-      return res.status(200);
+      return res.status(200).send();
     } catch (e: any) {
       if (!(e instanceof InternalServerError)) {
         return next(e);
@@ -121,7 +121,7 @@ class AdminController {
 
       await this._delete.execute(id);
 
-      return res.status(200);
+      return res.status(200).send();
     } catch (e: any) {
       if (!(e instanceof InternalServerError)) {
         return next(e);

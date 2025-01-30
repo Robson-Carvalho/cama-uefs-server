@@ -1,3 +1,4 @@
+import { RecoverPassword } from "../../core/use-cases/auth/RecoverPassword";
 import { SignIn } from "../../core/use-cases/auth/SignIn";
 
 import { AdminRepository } from "../../infrastructure/repositories/AdminRepository";
@@ -11,6 +12,10 @@ class DependecyInjectionAuthRepository {
 
   static getSignInUseCase() {
     return new SignIn(this._adminRepository);
+  }
+
+  static getRecoverPasswordUseCase() {
+    return new RecoverPassword(this._adminRepository);
   }
 }
 
