@@ -29,7 +29,7 @@ class AuthController {
 
   async recoverPassword(req: Request, res: Response, next: NextFunction) {
     try {
-      const { email } = req.params;
+      const { email } = req.body;
 
       if (!email) next(new ValidationError("E-mail required."));
 

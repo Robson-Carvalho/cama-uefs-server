@@ -10,8 +10,8 @@ router.post("/signIn", (req: Request, res: Response, next: NextFunction) => {
   authController.signIn(req, res, next);
 });
 
-router.get(
-  "/recover/password/:email",
+router.post(
+  "/recover/password",
   (req: Request, res: Response, next: NextFunction) => {
     authController.recoverPassword(req, res, next);
   }
