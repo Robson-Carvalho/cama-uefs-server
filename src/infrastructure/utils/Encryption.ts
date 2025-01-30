@@ -1,4 +1,4 @@
-import { compare, hash } from 'bcryptjs';
+import { compare, hash } from "bcryptjs";
 
 class Encryption {
   private static instance: Encryption;
@@ -13,11 +13,11 @@ class Encryption {
     return Encryption.instance;
   }
 
-  public async hash(password: string) {
+  public hash(password: string) {
     return hash(password, parseInt(this.saltRounds));
   }
 
-  public async compare(sendPassword: string, hashPassword: string) {
+  public compare(sendPassword: string, hashPassword: string) {
     return compare(sendPassword, hashPassword);
   }
 }

@@ -21,7 +21,6 @@ class ClassController {
         return next(e);
       }
 
-      console.error("Error: " + e.message);
       return next(new InternalServerError("Internal server error"));
     }
   }
@@ -32,6 +31,10 @@ class ClassController {
 
       return res.status(200).json(contentMap);
     } catch (e: any) {
+      if (!(e instanceof InternalServerError)) {
+        return next(e);
+      }
+
       return next(new InternalServerError(e.message));
     }
   }
@@ -60,7 +63,6 @@ class ClassController {
         return next(e);
       }
 
-      console.error("Error: " + e.message);
       return next(new InternalServerError("Internal server error"));
     }
   }
@@ -68,6 +70,7 @@ class ClassController {
   async getById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
+
       const classData = await this._getById.execute(id);
 
       if (!classData) {
@@ -80,7 +83,6 @@ class ClassController {
         return next(e);
       }
 
-      console.error("Error: " + e.message);
       return next(new InternalServerError("Internal server error"));
     }
   }
@@ -88,7 +90,16 @@ class ClassController {
   async update(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
+
       const { title, path } = req.body;
+
+      if (!title) {
+        throw new ValidationError("Title class required");
+      }
+
+      if (!path) {
+        throw new ValidationError("Path class required");
+      }
 
       await this._update.execute(id, title, path);
 
@@ -98,7 +109,6 @@ class ClassController {
         return next(e);
       }
 
-      console.error("Error: " + e.message);
       return next(new InternalServerError("Internal server error"));
     }
   }
@@ -115,7 +125,6 @@ class ClassController {
         return next(e);
       }
 
-      console.error("Error: " + e.message);
       return next(new InternalServerError("Internal server error"));
     }
   }

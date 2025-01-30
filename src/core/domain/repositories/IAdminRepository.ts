@@ -1,19 +1,17 @@
-import {
-  IGetAdmins,
-  IResponseAdminById,
-  IResponseCreateAdmin,
-} from "../../dtos/AdminDTOs";
+import { IAdmin, IGetAdmins, IResponseAdminById } from "../../dtos/AdminDTOs";
 
 interface IAdminRepository {
   get(): Promise<IGetAdmins[] | []>;
-  create(
+  create(name: string, email: string, password: string): Promise<string | null>;
+  getById(_id: string): Promise<IResponseAdminById | null>;
+  getByEmail(email: string): Promise<IAdmin | null>;
+  update(
+    _id: string,
     name: string,
     email: string,
     password: string
-  ): Promise<IResponseCreateAdmin | null>;
-  getById(id: string): Promise<IResponseAdminById | null>;
-  update(id: string): Promise<void>;
-  delete(id: string): Promise<void>;
+  ): Promise<void>;
+  delete(_id: string): Promise<void>;
 }
 
 export { IAdminRepository };
