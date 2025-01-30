@@ -24,15 +24,8 @@ class AdminRepository implements IAdminRepository {
 
   async getByEmail(email: string): Promise<IAdmin | null> {
     try {
-      const admin = await AdminModel.findOne({ email });
-
-      if (admin === null) {
-        throw new NotFoundError("Admin not found.");
-      }
-
-      return admin;
+      return await AdminModel.findOne({ email });
     } catch (error) {
-      console.error(error);
       throw new InternalServerError("Error get admin by email.");
     }
   }
