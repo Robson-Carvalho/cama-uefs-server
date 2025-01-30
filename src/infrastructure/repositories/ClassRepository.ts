@@ -4,6 +4,7 @@ import { TopicModel } from "../../core/domain/entities/Topic";
 import { IClassRepository } from "../../core/domain/repositories/IClassRepository";
 import { IClass } from "../../core/dtos/ClassDTOs";
 import { IContentMap } from "../../core/interfaces/IContentMap";
+import { InternalServerError } from "../../core/errors/Errors";
 
 class ClassRepository implements IClassRepository {
   async create(title: string, path: string): Promise<IClass | null> {
@@ -11,7 +12,7 @@ class ClassRepository implements IClassRepository {
       return await ClassModel.create({ title, path });
     } catch (error) {
       console.error("Error creating class:", error);
-      return null;
+      throw new InternalServerError("Internal Server Error");
     }
   }
 
@@ -20,7 +21,7 @@ class ClassRepository implements IClassRepository {
       return await ClassModel.find();
     } catch (error) {
       console.error("Error fetching classes:", error);
-      return [];
+      throw new InternalServerError("Internal Server Error");
     }
   }
 
@@ -29,7 +30,7 @@ class ClassRepository implements IClassRepository {
       return await ClassModel.findOne({ path });
     } catch (error) {
       console.error("Error fetching topic by path:", error);
-      return null;
+      throw new InternalServerError("Internal Server Error");
     }
   }
 
@@ -67,7 +68,7 @@ class ClassRepository implements IClassRepository {
       return contentMap;
     } catch (error) {
       console.error("Error fetching content map", error);
-      return [];
+      throw new InternalServerError("Internal Server Error");
     }
   }
 
@@ -76,7 +77,7 @@ class ClassRepository implements IClassRepository {
       return await ClassModel.findById(_id);
     } catch (error) {
       console.error("Error fetching class by ID:", error);
-      return null;
+      throw new InternalServerError("Internal Server Error");
     }
   }
 
@@ -85,7 +86,7 @@ class ClassRepository implements IClassRepository {
       return await ClassModel.findOne().sort({ createdAt: -1 });
     } catch (error) {
       console.error("Error fetching last created class:", error);
-      return null;
+      throw new InternalServerError("Internal Server Error");
     }
   }
 
@@ -94,7 +95,7 @@ class ClassRepository implements IClassRepository {
       await ClassModel.findByIdAndUpdate(_id, { title, path }, { new: true });
     } catch (error) {
       console.error("Error updating class:", error);
-      throw new Error("Failed to update class");
+      throw new InternalServerError("Internal Server Error");
     }
   }
 
@@ -112,7 +113,7 @@ class ClassRepository implements IClassRepository {
     } catch (error) {
       await session.abortTransaction();
       console.error("Error deleting class and associated topics:", error);
-      throw new Error("Failed to delete class and associated topics");
+      throw new InternalServerError("Internal Server Error");
     } finally {
       session.endSession();
     }

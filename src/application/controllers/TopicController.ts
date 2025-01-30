@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { DependecyInjectionTopicRepository } from "../containers/DependecyInjectionTopicRepository";
-import { InternalServerError } from "../../core/errors/Errors";
+import { InternalServerError, ValidationError } from "../../core/errors/Errors";
 
 class TopicController {
   private _get = DependecyInjectionTopicRepository.getGetUseCase();
@@ -24,13 +24,17 @@ class TopicController {
         classPath,
         topicPath
       );
+
       if (!topic) {
         return res.status(404).json({ message: "Topic not found" });
       }
 
       return res.status(200).json(topic);
-    } catch (error) {
-      console.error("Error fetching topic by class and path:", error);
+    } catch (e) {
+      if (!(e instanceof InternalServerError)) {
+        return next(e);
+      }
+
       return next(new InternalServerError("Internal server error"));
     }
   }
@@ -41,6 +45,10 @@ class TopicController {
 
       return res.status(200).json(topics);
     } catch (e: any) {
+      if (!(e instanceof InternalServerError)) {
+        return next(e);
+      }
+
       return next(new InternalServerError(e.message));
     }
   }
@@ -53,6 +61,10 @@ class TopicController {
 
       return res.status(200).json(topic);
     } catch (e: any) {
+      if (!(e instanceof InternalServerError)) {
+        return next(e);
+      }
+
       return next(new InternalServerError(e.message));
     }
   }
@@ -65,6 +77,10 @@ class TopicController {
 
       return res.status(200).json(topic);
     } catch (e: any) {
+      if (!(e instanceof InternalServerError)) {
+        return next(e);
+      }
+
       return next(new InternalServerError(e.message));
     }
   }
@@ -73,10 +89,30 @@ class TopicController {
     try {
       const { title, content, path, classID } = req.body;
 
+      if (!title) {
+        throw new ValidationError("Title class required");
+      }
+
+      if (!content) {
+        throw new ValidationError("Content class required");
+      }
+
+      if (!path) {
+        throw new ValidationError("Path class required");
+      }
+
+      if (!classID) {
+        throw new ValidationError("ClassID class required");
+      }
+
       const topic = await this._create.execute(title, content, path, classID);
 
       return res.status(201).json(topic);
     } catch (e: any) {
+      if (!(e instanceof InternalServerError)) {
+        return next(e);
+      }
+
       return next(new InternalServerError(e.message));
     }
   }
@@ -84,7 +120,24 @@ class TopicController {
   async update(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
+
       const { title, content, path, classID } = req.body;
+
+      if (!title) {
+        throw new ValidationError("Title class required");
+      }
+
+      if (!content) {
+        throw new ValidationError("Content class required");
+      }
+
+      if (!path) {
+        throw new ValidationError("Path class required");
+      }
+
+      if (!classID) {
+        throw new ValidationError("ClassID class required");
+      }
 
       const updatedTopic = await this._update.execute(
         id,
@@ -96,6 +149,10 @@ class TopicController {
 
       return res.status(200).json(updatedTopic);
     } catch (e: any) {
+      if (!(e instanceof InternalServerError)) {
+        return next(e);
+      }
+
       return next(new InternalServerError(e.message));
     }
   }
@@ -108,6 +165,10 @@ class TopicController {
 
       return res.status(204).send();
     } catch (e: any) {
+      if (!(e instanceof InternalServerError)) {
+        return next(e);
+      }
+
       return next(new InternalServerError(e.message));
     }
   }

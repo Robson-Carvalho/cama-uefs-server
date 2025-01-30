@@ -1,14 +1,10 @@
 import { IClassRepository } from "../../domain/repositories/IClassRepository";
 
 class Delete {
-  private classRepository: IClassRepository;
-
-  constructor(classRepository: IClassRepository) {
-    this.classRepository = classRepository;
-  }
+  constructor(private _classRepository: IClassRepository) {}
 
   async execute(id: string): Promise<void> {
-    await this.classRepository.delete(id);
+    await this._classRepository.delete(id);
   }
 }
 

@@ -1,5 +1,9 @@
 import * as express from "express";
 
 declare global {
-  namespace Express {}
+  namespace Express {
+    interface Request {
+      user_id?: Record<string>;
+    }
+  }
 }

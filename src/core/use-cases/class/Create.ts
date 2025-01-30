@@ -2,14 +2,10 @@ import { IClassRepository } from "../../domain/repositories/IClassRepository";
 import { IClass } from "../../dtos/ClassDTOs";
 
 class Create {
-  private classRepository: IClassRepository;
-
-  constructor(classRepository: IClassRepository) {
-    this.classRepository = classRepository;
-  }
+  constructor(private _classRepository: IClassRepository) {}
 
   async execute(title: string, path: string): Promise<IClass | null> {
-    return await this.classRepository.create(title, path);
+    return await this._classRepository.create(title, path);
   }
 }
 

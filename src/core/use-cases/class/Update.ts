@@ -1,14 +1,10 @@
 import { IClassRepository } from "../../domain/repositories/IClassRepository";
 
 class Update {
-  private classRepository: IClassRepository;
-
-  constructor(classRepository: IClassRepository) {
-    this.classRepository = classRepository;
-  }
+  constructor(private _classRepository: IClassRepository) {}
 
   async execute(id: string, title: string, path: string): Promise<void> {
-    await this.classRepository.update(id, title, path);
+    await this._classRepository.update(id, title, path);
   }
 }
 
