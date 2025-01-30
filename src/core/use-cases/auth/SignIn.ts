@@ -26,7 +26,9 @@ class SignIn {
       throw new UnauthorizedError("E-mail and/or password invalid.");
     }
 
-    const token: string = await JWT.getInstance().sign(admin._id.toString());
+    const token: string = (await JWT.getInstance().sign(
+      admin._id.toString()
+    )) as string;
 
     const payload: IPayload = {
       admin: {

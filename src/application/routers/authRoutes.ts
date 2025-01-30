@@ -6,7 +6,7 @@ const router = Router();
 
 const authController = new AuthController();
 
-router.post("/signIn", (req: Request, res: Response, next: NextFunction) => {
+router.post("/login", (req: Request, res: Response, next: NextFunction) => {
   authController.signIn(req, res, next);
 });
 
