@@ -20,10 +20,11 @@ const AuthMiddleware = async (
     return next(new ForbiddenError("Token not provided"));
   }
 
-  const [, token] = authorization.split(" ");
+  const [token, _] = authorization.split(" ");
 
   try {
     const decoded = await JWT.getInstance().verify(token);
+
     const { id } = decoded as TokenPaylod;
 
     req.user_id = id;
