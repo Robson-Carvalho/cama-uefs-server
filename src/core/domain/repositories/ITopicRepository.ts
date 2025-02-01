@@ -1,6 +1,7 @@
 import { ITopic } from "../../dtos/TopicDTOs";
 
 interface ITopicRepository {
+  getByClassId(id: string): Promise<ITopic[] | []>;
   get(): Promise<ITopic[] | []>;
   getById(id: string): Promise<ITopic | null>;
   getByPath(path: string): Promise<ITopic | null>;

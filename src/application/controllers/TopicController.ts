@@ -4,6 +4,8 @@ import { InternalServerError, ValidationError } from "../../core/errors/Errors";
 
 class TopicController {
   private _get = DependecyInjectionTopicRepository.getGetUseCase();
+  private _getByClassId =
+    DependecyInjectionTopicRepository.getGetByClassIdUseCase();
   private _create = DependecyInjectionTopicRepository.getCreateUseCase();
   private _getById = DependecyInjectionTopicRepository.getGetByIdUseCase();
   private _getByPath = DependecyInjectionTopicRepository.getGetByPathUseCase();
@@ -11,6 +13,22 @@ class TopicController {
   private _delete = DependecyInjectionTopicRepository.getDeleteUseCase();
   private _getTopicByClassAndPath =
     DependecyInjectionTopicRepository.getTopicByClassAndPathUseCase();
+
+  async getByClassId(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+
+      const topics = await this._getByClassId.execute(id);
+
+      return res.status(200).json(topics);
+    } catch (e) {
+      if (!(e instanceof InternalServerError)) {
+        return next(e);
+      }
+
+      return next(new InternalServerError("Internal server error"));
+    }
+  }
 
   async getTopicByClassAndPath(
     req: Request,
