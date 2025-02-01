@@ -4,6 +4,15 @@ import { ITopicRepository } from "../../core/domain/repositories/ITopicRepositor
 import { ITopic } from "../../core/dtos/TopicDTOs";
 
 class TopicRepository implements ITopicRepository {
+  async getByClassId(id: string): Promise<ITopic[] | []> {
+    try {
+      return await TopicModel.find({ classID: id });
+    } catch (error) {
+      console.error("Error fetching topics:", error);
+      return [];
+    }
+  }
+
   async get(): Promise<ITopic[] | []> {
     try {
       return await TopicModel.find();

@@ -6,12 +6,17 @@ import { Delete } from "../../core/use-cases/topic/Delete";
 import { Update } from "../../core/use-cases/topic/Update";
 import { GetByPath } from "../../core/use-cases/topic/GetByPath";
 import { GetTopicByClassAndPath } from "../../core/use-cases/topic/GetTopicByClassAndPath";
+import { GetByClassId } from "../../core/use-cases/topic/GetByClassId";
 
 class DependecyInjectionTopicRepository {
   private static _topicRepository = new TopicRepository();
 
   static getClassRepository() {
     return this._topicRepository;
+  }
+
+  static getGetByClassIdUseCase() {
+    return new GetByClassId(this._topicRepository);
   }
 
   static getGetUseCase() {
